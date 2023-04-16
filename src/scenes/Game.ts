@@ -74,11 +74,12 @@ export default class Game extends Phaser.Scene{
 		const mouse = new RocketMouse(this,width*0.5,height-30)
 		this.add.existing(mouse)
 
-		mouse.body.setCollideWorldBounds(true)
-		mouse.body.setBounce(1,0.3)
-		mouse.body.setVelocity(200,0)
+		const body = mouse.body as Phaser.Physics.Arcade.Body
+		body.setCollideWorldBounds(true)
+		body.setBounce(1,0.3)
+		body.setVelocity(200,0)
 
-		this.cameras.main.startFollow(mouse.body)
+		this.cameras.main.startFollow(body)
 		this.cameras.main.setBounds(0,0,Number.MAX_SAFE_INTEGER,height)
 
 		this.physics.world.setBounds(0,0,Number.MAX_SAFE_INTEGER,height-30)
