@@ -6,7 +6,7 @@ export default class RocketMouse extends Phaser.GameObjects.Container{
 
 	private flames: Phaser.GameObjects.Sprite
 	private mouse: Phaser.GameObjects.Sprite
-	private cursors:Phaser.Types.Input.Keyboard.CursorKeys
+	private cursors:Phaser.Types.Input.Keyboard.CursorKeys | undefined
 
 	constructor(scene:Phaser.Scene, x:number, y:number){
 		super(scene,x,y)
@@ -34,7 +34,7 @@ export default class RocketMouse extends Phaser.GameObjects.Container{
 
 
 		// getting cursors
-		this.cursors = scene.input.keyboard?.createCursorKeys()
+		this.cursors = scene?.input?.keyboard?.createCursorKeys()
 	}
 
 
@@ -42,7 +42,7 @@ export default class RocketMouse extends Phaser.GameObjects.Container{
 		const body = this.body as Phaser.Physics.Arcade.Body
 
 		// spacebar press
-		if(this.cursors.space?.isDown){
+		if(this.cursors?.space?.isDown){
 			body.setAccelerationY(-600)
 			this.enableJetPack(true)
 			this.mouse.play(AnimationKeys.RocketMouseFly,true)

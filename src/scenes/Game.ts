@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import AnimationKeys from '../consts/AnimationKeys'
 import TextureKeys from '../consts/TextureKeys'
 import RocketMouse from '../game/RocketMouse'
 
@@ -11,8 +10,8 @@ export default class Game extends Phaser.Scene{
 	private window2! : Phaser.GameObjects.Image
 	private bookcase1! : Phaser.GameObjects.Image
 	private bookcase2! : Phaser.GameObjects.Image
-	private bookcases: Phaser.GameObjects.Image []
-	private windows: Phaser.GameObjects.Image []
+	private bookcases: Phaser.GameObjects.Image[] = []
+	private windows: Phaser.GameObjects.Image[] = []
 
 	constructor(){
 		super()
@@ -163,7 +162,7 @@ export default class Game extends Phaser.Scene{
 		}
 	}
 
-	update(t:number, dt:number){
+	update(){
 		this.wrapMouseHole()
 		this.wrapWindows()
 		this.wrapBookcases()

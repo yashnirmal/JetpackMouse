@@ -1,4 +1,4 @@
-import Phaser, { Textures } from 'phaser'
+import Phaser from 'phaser'
 import TextureKeys from '../consts/TextureKeys'
 import AnimationKeys from '../consts/AnimationKeys'
 
@@ -28,8 +28,6 @@ export default class Preloader extends Phaser.Scene{
 		// loading bookcases
 		this.load.image(TextureKeys.Bookcase1,'/Objects/object_bookcase1.png')
 		this.load.image(TextureKeys.Bookcase2,'/Objects/object_bookcase2.png')
-
-
 	}
 
 	create(){
