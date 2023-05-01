@@ -1,12 +1,15 @@
 import Phaser from 'phaser';
 import AnimationKeys from '../consts/AnimationKeys';
 import TextureKeys from '../consts/TextureKeys';
+import MouseState from "../consts/MouseState";
+import SceneKeys from '../consts/SceneKeys';
 
 export default class RocketMouse extends Phaser.GameObjects.Container{
 
 	private flames: Phaser.GameObjects.Sprite
 	private mouse: Phaser.GameObjects.Sprite
 	private cursors:Phaser.Types.Input.Keyboard.CursorKeys | undefined
+	private mouseState = MouseState.Running
 
 	constructor(scene:Phaser.Scene, x:number, y:number){
 		super(scene,x,y)
@@ -39,30 +42,61 @@ export default class RocketMouse extends Phaser.GameObjects.Container{
 
 
 	preUpdate(){
+
 		const body = this.body as Phaser.Physics.Arcade.Body
 
-		// spacebar press
-		if(this.cursors?.space?.isDown){
-			body.setAccelerationY(-600)
-			this.enableJetPack(true)
-			this.mouse.play(AnimationKeys.RocketMouseFly,true)
-		}
-		else{
-			body.setAccelerationY(0)
-			this.enableJetPack(false)
-		}
 
-		// mouse toching the ground
-		if(body.blocked.down){
-			this.mouse.play(AnimationKeys.RocketMouseRun,true)
+		switch(this.mouseState){
+			case MouseState.Running:
+			{
+
+				// spacebar press
+				if(this.cursors?.space?.isDown){
+					body.setAccelerationY(-1000)
+					this.enableJetPack(true)
+					this.mouse.play(AnimationKeys.RocketMouseFly,true)
+				}
+				else{
+					body.setAccelerationY(0)
+					this.enableJetPack(false)
+				}
+
+				// mouse toching the ground
+				if(body.blocked.down){
+					this.mouse.play(AnimationKeys.RocketMouseRun,true)
+				}
+				else if(body.velocity.y>0){
+					this.mouse.play(AnimationKeys.RocketMouseFall,true)
+				}
+
+				 break
+			} 
+			case MouseState.Killed:
+			{
+				body.setVelocity(0,0)
+
+				this.scene.scene.start(SceneKeys.GameOver)
+				break
+			} 
 		}
-		else if(body.velocity.y>0){
-			this.mouse.play(AnimationKeys.RocketMouseFall,true)
-		}
+		
 
 	}
 
 	enableJetPack(enabled:boolean){
 		this.flames.setVisible(enabled)
+	}
+
+	kill(){
+
+		if(this.mouseState !== MouseState.Running) return
+
+		this.mouseState = MouseState.Killed
+		this.mouse.play(AnimationKeys.RocketMouseDead)
+
+		const body = this.body as Phaser.Physics.Arcade.Body
+		body.setAccelerationY(0)
+		body.setVelocity(1000,0)
+		this.enableJetPack(false)
 	}
 }
