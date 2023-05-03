@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import TextureKeys from '../consts/TextureKeys'
 import RocketMouse from '../game/RocketMouse'
 import LaserObstacles from '../game/LaserObstacle'
-import MouseState from '../consts/MouseState'
+// import MouseState from '../consts/MouseState'
 
 export default class Game extends Phaser.Scene{
 
@@ -94,7 +94,7 @@ export default class Game extends Phaser.Scene{
 		this.physics.add.overlap(
 			this.laserObstacle,
 			mouse,
-			this.handleOverlapLaser,
+			()=>this.handleOverlapLaser(mouse),
 			undefined,
 			this
 		)			
@@ -200,10 +200,9 @@ export default class Game extends Phaser.Scene{
 	}
 
 	private handleOverlapLaser(
-		obj1:Phaser.GameObjects.GameObject,
-		obj2:Phaser.GameObjects.GameObject
+		obj:Phaser.GameObjects.GameObject
 		){
-		const mouse = obj2 as RocketMouse
+		const mouse = obj as RocketMouse
 		mouse.kill() 
 	}
 
